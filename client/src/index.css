@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme{
+    --font-display: "Roboto", "serif";
+    --color-highlight: #ec7695;
+    --color-primary: #EF9595;
+    --color-secondary: #EFB495;
+    --color-hover: #EFD595;
+    --color-background: #FFF1D5;
+    --color-error: #FF8FA7;
+    --color-success: #43efb6;
+}
+
