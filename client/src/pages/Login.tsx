@@ -10,19 +10,19 @@ import { useAuthStore } from "../store/authStore";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface FormData {
-  email: string;
+  phone: string;
   password: string;
 }
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ email: '', password: ''});
-  const { email, password } = formData;
+  const [formData, setFormData] = useState<FormData>({ phone: '', password: ''});
+  const { phone, password } = formData;
 
   const { isLoggedIn } = useAuthStore();
 
   const { rememberMe } = useRememberMe();
 
-  const { setEmail, setNickname } = useLoginStore();
+  const { setFirstName, setLastName } = useLoginStore();
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -38,17 +38,17 @@ const Login: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-    if ((name === 'email' && value.length > 0)){
+    if ((name === 'phone' && value.length > 0)){
       setError('');
     }
     else {
-      setError('Please make sure all fields are filled in correctly.');
+      setError('Tüm alanları dolduğunuzdan emin olun.');
     }
     if((name === 'password' && value.length > 0)){
       setError('');
     }
     else{
-      setError('Please make sure all fields are filled in correctly.');
+      setError('Tüm alanları dolduğunuzdan emin olun.');
     }
   };
 
@@ -56,9 +56,9 @@ const Login: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await loginUser(email, password, rememberMe);
-      setEmail(response.email);
-      setNickname(response.username);
+      const response = await loginUser(phone, password, rememberMe);
+      setFirstName(response.firstName);
+      setLastName(response.lastName);
       navigate("/");
     } 
     catch (err: any) {
@@ -72,32 +72,32 @@ const Login: React.FC = () => {
       <Navbar></Navbar>
       <div className="flex flex-col mt-24 items-center justify-center ">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white p-6 rounded-2xl shadow-secondary shadow-2xl w-97">
-          <h2 className="text-xl self-center font-display text-highlight mb-2 font-bold">Login</h2>
+          <h2 className="text-xl self-center font-display text-highlight mb-2 font-bold">Giriş Yap</h2>
           {error && <p className="text-error text-sm font-display">{error}</p>}
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={email}
+            type="tel"
+            name="phone"
+            placeholder="Telefon (XXX XXX XX XX)"
+            value={phone}
             onChange={handleChange}
             className="w-full px-3 py-2 border placeholder:text-secondary focus:outline-none focus:ring-1 focus:ring-primary text-secondary rounded mb-2"
           />
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Parola"
             value={password}
             onChange={handleChange}
             className="w-full px-3 py-2 border placeholder:text-secondary focus:outline-none focus:ring-1 focus:ring-primary text-secondary rounded mb-2"
           />
           <SliderCheckbox></SliderCheckbox>
           <Link to="/register" className="underline text-secondary mb-2 font-display hover:text-hover transition">
-          Don't have an account yet?</Link>
+          Hesabınız yok mu?</Link>
           <SubmitButton disabled={isLoading} >
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin text-2xl"/>
             ) : (
-              'LOGIN'
+              'GİRİŞ YAP'
             )}
           </SubmitButton>
         </form>

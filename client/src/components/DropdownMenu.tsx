@@ -45,7 +45,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, trigger }) => {
           aria-orientation="vertical"
           aria-labelledby="options-menu"
         >
-          <div className="" role="none">
+          <div className="max-h-36 overflow-y-auto" role="none">
             {items.map((item, index) => (
               <button
                 key={index}

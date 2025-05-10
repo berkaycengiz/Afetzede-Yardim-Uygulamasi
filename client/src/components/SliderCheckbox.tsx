@@ -30,7 +30,7 @@ const SliderCheckbox = () => {
           </span>
       </label>  
       <span className="text-sm font-normal font-display text-secondary">
-        Remember me
+        Beni hatırla
       </span>
     </div>
   );

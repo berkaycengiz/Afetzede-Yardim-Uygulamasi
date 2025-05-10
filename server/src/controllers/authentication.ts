@@ -3,13 +3,14 @@ import { createUser, getUserBySessionToken, getUserByPhone, getUserById } from "
 import { authentication, random } from "../helpers";
 import { uploadFromBuffer } from "../helpers/cloudinaryHelper";
 import { sendOTP, verifyOTP } from '../helpers/twilioHelper';
+import { merge } from 'lodash';
 
 export const authMe = async (req: express.Request, res: express.Response): Promise<any> => {
     try{
         const sessionToken = req.cookies['COOKIE-AUTH'];
 
         if (!sessionToken) {
-          return res.status(401).json({ message: 'Access denied. Please log in first.' });
+          return res.status(401).json({ message: 'Erişim engellendi. Lütfen giriş yapınız.' });
         }
     
         const user = await getUserBySessionToken(sessionToken);
@@ -17,7 +18,7 @@ export const authMe = async (req: express.Request, res: express.Response): Promi
         if (!user) {
           return res.status(401).json({ message: 'Invalid or expired session' });
         }
-    
+        merge(req, {identity: user});
         return res.sendStatus(200);
     } 
     catch (error) {
@@ -31,18 +32,18 @@ export const login = async (req: express.Request, res: express.Response): Promis
         const {phone, password, rememberMe} = req.body;
 
         if(!phone || !password){
-            return res.status(400).json({ message: 'Please make sure all fields are filled in correctly.' });
+            return res.status(400).json({ message: 'Tüm alanları dolduğunuzdan emin olun.' });
         }
 
         const user = await getUserByPhone(phone).select('+authentication.salt +authentication.password');
 
         if(!user){
-            return res.status(403).json({ message: 'Phone number or password is invalid.' });
+            return res.status(403).json({ message: 'Telefon numarası veya şifre yanlış' });
         }
 
         const expectedHash = authentication(user.authentication.salt, password);
         if(expectedHash !== user.authentication.password){
-            return res.status(403).json({ message: 'Phone number or password is invalid.' });
+            return res.status(403).json({ message: 'Telefon numarası veya şifre yanlış' });
         }
 
         const salt = random();
@@ -51,11 +52,11 @@ export const login = async (req: express.Request, res: express.Response): Promis
         await user.save();
 
         res.cookie('COOKIE-AUTH', user.authentication.sessionToken, {
-                domain: '.localhost', 
-                path: '/', 
-                httpOnly: true,
-                sameSite: 'lax',
-                maxAge: rememberMe ? 14 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000
+            domain: '.localhost', 
+            path: '/', 
+            httpOnly: true,
+            sameSite: 'lax',
+            maxAge: rememberMe ? 14 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000
         });
         return res.status(200).json(user).end();
     }
@@ -76,17 +77,17 @@ export const register = async (req: express.Request, res: express.Response): Pro
         }
 
         if (!firstName || !lastName || !phone || !dateOfBirth || !bloodType || !address || !gender || !isDisabled || !password){
-            return res.status(400).json({ message: 'Please make sure all fields are filled in correctly.' });
+            return res.status(400).json({ message: 'Tüm alanları dolduğunuzdan emin olun.' });
         }
 
         const existingUser = await getUserByPhone(phone);
 
         if(existingUser){
-            return res.status(400).json({ message: 'Phone number is already in use' });
+            return res.status(400).json({ message: 'Bu telefon numarasıyla zaten kayıt olunmuş.' });
         }
 
         if(password.length < 6){
-            return res.status(400).json({ message: 'Password must be at least 6 characters long.' })
+            return res.status(400).json({ message: 'Şifre en az 6 karakter olmalı.' })
         }
 
         const salt = random();
@@ -121,7 +122,7 @@ export const logout = async (req: express.Request, res: express.Response): Promi
         const sessionToken = req.cookies['COOKIE-AUTH'];
         
         if (!sessionToken) {
-            return res.status(401).json({ message: 'Access denied. Please log in first.' });
+            return res.status(401).json({ message: 'Erişim engellendi. Lütfen giriş yapınız.' });
         }
         
         const user = await getUserBySessionToken(sessionToken);
@@ -129,7 +130,7 @@ export const logout = async (req: express.Request, res: express.Response): Promi
         user.authentication.sessionToken = '';
         await user.save();
         res.clearCookie('COOKIE-AUTH');
-        return res.status(200).json({ message: 'Successfully logged out' });
+        return res.status(200).json({ message: 'Başarıyla çıkış yapıldı.' });
     }
     catch(error){
         console.log(error);
@@ -144,7 +145,7 @@ export const uploadPic = async (req: express.Request, res: express.Response): Pr
         const user = await getUserById(id);
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
         }
 
         if (req.file) {
@@ -165,7 +166,7 @@ export const uploadPic = async (req: express.Request, res: express.Response): Pr
 
 export const sendCode = async (req: express.Request, res: express.Response): Promise<any> => {
     const { phone } = req.body as { phone?: string };
-    if (!phone) return res.status(400).json({ error: 'Phone number is required.' });
+    if (!phone) return res.status(400).json({ error: 'Telefon numarası gerekli.' });
 
     try {
         const status = await sendOTP(phone);
@@ -173,7 +174,7 @@ export const sendCode = async (req: express.Request, res: express.Response): Pro
     } 
     catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'An error occurred while sending the code.' });
+        res.status(500).json({ error: 'Kod gönderilirken bir hata oluştu' });
     }
 };
 
@@ -187,6 +188,6 @@ export const verifyCode = async (req: express.Request, res: express.Response): P
     } 
     catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Verification failed.' });
+        res.status(500).json({ error: 'Doğrulama başarısız.' });
     }
 };

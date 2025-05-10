@@ -66,11 +66,11 @@ const Register: React.FC = () => {
         setError("");
       }
       if (name === 'password' && value.length < 6) {
-        setError('Password must be at least 6 characters long.');
+        setError('Şifre en az 6 karakter olmalı.');
         return
       }
       else if(name === 'confirmPassword' && value !== password){
-        setError('Passwords do not match!');
+        setError('Şifreler eşleşmiyor!');
       }
     }
     else{
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+      setError('Şifreler eşleşmiyor!');
       return;
     }
     try {
@@ -144,13 +144,13 @@ const Register: React.FC = () => {
             opacity: activeCard === 1 ? 1 : 0,
             pointerEvents: activeCard === 1 ? 'auto' : 'none',
           }}>
-          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Register</h2>
+          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Kayıt Ol</h2>
           {error && <p className="text-error text-sm">{error}</p>}
-          {isVerified && <p className="text-success text-sm">Verified Successfully!</p>}
+          {isVerified && <p className="text-success text-sm">Doğrulama Başarılı!</p>}
           <input
             type="tel"
             name="phone"
-            placeholder="Phone Number"
+            placeholder="Telefon (XXX XXX XX XX)"
             value={phone}
             onChange={handleChange}
             maxLength={10}
@@ -163,7 +163,7 @@ const Register: React.FC = () => {
               {isLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin text-2xl" />
               ) : (
-                'SEND CODE'
+                'KOD GÖNDER'
               )}
             </SubmitButton>
             </>
@@ -173,7 +173,7 @@ const Register: React.FC = () => {
               <input
                 type="text"
                 name="otp"
-                placeholder="Enter OTP"
+                placeholder="KODU GİRİNİZ"
                 value={otp}
                 onChange={handleChange}
                 maxLength={6}
@@ -182,15 +182,15 @@ const Register: React.FC = () => {
               />
               <SubmitButton disabled={isVerified}>
                 {isVerified ? (
-                  'VERIFIED SUCCESSFULLY'
+                  'DOĞRULAMA BAŞARILI'
                 ) : (
-                  'VERIFY'
+                  'DOĞRULA'
                 )}
               </SubmitButton>
             </>
           )}
           <Link to="/login" className="underline text-primary mb-2 font-display hover:text-hover transition">
-          Already registered?</Link>
+          Zaten kayıtlı mısın?</Link>
           <CircleButton disabled={!isVerified} onClick={() => setActiveCard(2)}><BsArrowRight className="text-2xl"></BsArrowRight></CircleButton>
         </form>
         <form className="flex flex-col gap-4 bg-white p-6 rounded-2xl absolute shadow-secondary shadow-2xl w-97 transition-all duration-1000" style={{
@@ -198,12 +198,12 @@ const Register: React.FC = () => {
             opacity: activeCard === 2 ? 1 : 0,
             pointerEvents: activeCard === 2 ? 'auto' : 'none',
           }}>
-          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Register</h2>
+          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Kayıt ol</h2>
           {error && <p className="text-error text-sm">{error}</p>}
           <input
             type="text"
             name="firstName"
-            placeholder="First Name"
+            placeholder="Ad"
             value={firstName}
             onChange={handleChange}
             maxLength={20}
@@ -213,7 +213,7 @@ const Register: React.FC = () => {
           <input
             type="text"
             name="lastName"
-            placeholder="Last Name"
+            placeholder="Soyad"
             value={lastName}
             onChange={handleChange}
             maxLength={20}
@@ -223,7 +223,7 @@ const Register: React.FC = () => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Parola"
             value={password}
             onChange={handleChange}
             spellCheck={false}
@@ -232,7 +232,7 @@ const Register: React.FC = () => {
           <input
             type="password"
             name="confirmPassword"
-            placeholder="Confirm Password"
+            placeholder="Parola Doğrula"
             value={confirmPassword}
             onChange={handleChange}
             spellCheck={false}
@@ -248,7 +248,7 @@ const Register: React.FC = () => {
             opacity: activeCard === 3 ? 1 : 0,
             pointerEvents: activeCard === 3 ? 'auto' : 'none',
           }}>
-          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Information</h2>
+          <h2 className="text-xl self-center font-display font-bold text-highlight mb-2">Bilgiler</h2>
           <input
             type="date"
             name="dateOfBirth"
@@ -260,7 +260,7 @@ const Register: React.FC = () => {
           <input
             type="text"
             name="address"
-            placeholder="Address"
+            placeholder="Adres"
             value={address}
             onChange={handleChange}
             spellCheck={false}
@@ -269,7 +269,7 @@ const Register: React.FC = () => {
           <input
             type="tel"
             name="emergencyContact"
-            placeholder="Emergency Contact"
+            placeholder="Yakınınızın Numarası (XXX XXX XX XX)"
             value={emergencyContact}
             onChange={handleChange}
             maxLength={10}
@@ -289,30 +289,30 @@ const Register: React.FC = () => {
             ]}
             trigger={
               <div className="w-full px-3 py-2 border flex justify-between items-center placeholder:text-secondary hover:text-highlight text-secondary rounded mb-2 transition">
-                {bloodType ? bloodType : "Blood Type"} <FaChevronDown></FaChevronDown>
+                {bloodType ? bloodType : "Kan Grubu"} <FaChevronDown></FaChevronDown>
               </div>
             }
           />
           <DropdownMenu
             items={[
-              { label: 'Male', onClick: () => setGender('Male') },
-              { label: 'Female', onClick: () => setGender('Female') },
-              { label: 'Other', onClick: () => setGender('Other') }
+              { label: 'Erkek', onClick: () => setGender('Male') },
+              { label: 'Kadın', onClick: () => setGender('Female') },
+              { label: 'Diğer', onClick: () => setGender('Other') }
             ]}
             trigger={
               <div className="w-full px-3 py-2 border flex justify-between items-center placeholder:text-secondary hover:text-highlight text-secondary rounded mb-2 transition">
-                {gender ? gender : "Gender"} <FaChevronDown></FaChevronDown>
+                {gender ? gender : "Cinsiyet"} <FaChevronDown></FaChevronDown>
               </div>
             }
           />
           <DropdownMenu
             items={[
-              { label: 'Yes', onClick: () => setIsDisabled('Yes') },
-              { label: 'No', onClick: () => setIsDisabled('No') }
+              { label: 'Evet', onClick: () => setIsDisabled('Yes') },
+              { label: 'Hayır', onClick: () => setIsDisabled('No') }
             ]}
             trigger={
               <div className="w-full px-3 py-2 border flex justify-between items-center placeholder:text-secondary hover:text-highlight text-secondary rounded mb-2 transition">
-                {isDisabled ? isDisabled : "Disability Status"} <FaChevronDown></FaChevronDown>
+                {isDisabled ? isDisabled : "Engellilik Durumu"} <FaChevronDown></FaChevronDown>
               </div>
             }
           />
@@ -326,7 +326,7 @@ const Register: React.FC = () => {
             opacity: activeCard === 4 ? 1 : 0,
             pointerEvents: activeCard === 4 ? 'auto' : 'none',
           }}>
-          <h2 className="text-xl self-center font-display font-bold text-primary mb-2">Profile Picture</h2>
+          <h2 className="text-xl self-center font-display font-bold text-primary mb-2">Profil Resmi</h2>
           {error && <p className="text-error text-sm mb-4">{error}</p>}
           <label htmlFor="profilePicInput" className="cursor-pointer block w-36 h-36 mx-auto">
             <div className="w-full h-full border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition duration-300 ease-in-out">
@@ -337,7 +337,7 @@ const Register: React.FC = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span className="text-xs">Upload Photo</span>
+                  <span className="text-xs">Fotoğraf Yükle</span>
                 </div>
               )}
             </div>
@@ -354,7 +354,7 @@ const Register: React.FC = () => {
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin text-2xl"/>
             ) : (
-              'REGISTER'
+              'KAYIT OL'
             )}
           </SubmitButton>
         </form>

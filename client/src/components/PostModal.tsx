@@ -4,7 +4,6 @@ import { RxCross2 } from "react-icons/rx";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "./SubmitButton";
-import { createPost } from "../services/createPostService";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export const PostModal = () => {
@@ -43,7 +42,6 @@ export const PostModal = () => {
     setIsLoading(true);
     setError('');
     try {
-      await createPost(post, description.trim()!);
       close();
       navigate(0);
     }

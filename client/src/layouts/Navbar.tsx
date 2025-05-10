@@ -10,7 +10,7 @@ import { useAuthStore } from "../store/authStore"
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
-  const { nickname, setNickname, setEmail, clearNickname, clearEmail } = useLoginStore();
+  const { firstName, lastName, setFirstName, setLastName, clearFirstName, clearLastName } = useLoginStore();
 
   const { isLoggedIn, setLoggedIn } = useAuthStore();
 
@@ -31,11 +31,11 @@ const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem('nickname');
-    const storedEmail = localStorage.getItem('email');
-    if (storedUsername && storedEmail) {
-      setNickname(storedUsername);
-      setEmail(storedEmail);
+    const storedFirstName = localStorage.getItem('firstName');
+    const storedLastName = localStorage.getItem('lastName');
+    if (storedFirstName && storedLastName) {
+      setFirstName(storedFirstName);
+      setLastName(storedLastName);
     }
   }, []);
 
@@ -44,8 +44,8 @@ const Navbar: React.FC = () => {
     try {
       await logoutUser();
       setLoggedIn(false);
-      clearEmail();
-      clearNickname();
+      clearFirstName();
+      clearLastName();
       navigate("/");
     } catch (err: any) {
       console.error(err.response?.data || err.message);
@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
         <Link to="/" className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
         currentPath === "/" ? "text-highlight" : "text-secondary hover:text-highlight"
         }`}>
-          Map
+          HARİTA
           <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
           </span>
           <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
@@ -73,23 +73,10 @@ const Navbar: React.FC = () => {
           <div className="flex h-full gap-8">
             { isLoggedIn ? (
               <>
-                <Link to={`/profile/${nickname}`} className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
-                currentPath === `/profile/${nickname}` ? "text-highlight" : "text-secondary hover:text-highlight"
+                <Link to={`/profile/${firstName}`} className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
+                currentPath === `/profile/${firstName}` ? "text-highlight" : "text-secondary hover:text-highlight"
                 }`}>
-                  {nickname} 
-                  <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
-                  </span>
-                  <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
-                  </span>
-                  <span className="absolute top-0 left-0 h-0.5 w-full origin-right scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
-                  </span>
-                  <span className="absolute bottom-0 right-0 h-full w-0.5 origin-top scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
-                  </span>
-                </Link>
-                <Link to="/settings" className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
-                currentPath === `/settings` ? "text-highlight" : "text-secondary hover:text-highlight"
-                }`}>
-                  Settings
+                  {firstName} {lastName} 
                   <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
                   </span>
                   <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
@@ -100,7 +87,7 @@ const Navbar: React.FC = () => {
                   </span>
                 </Link>
                 <Link to="/login" onClick={handleLogout} className="relative group transform duration-500 p-2 hover:scale-105 text-secondary font-bold font-display hover:text-highlight self-center">
-                  Logout
+                  Çıkış yap
                   <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
                   </span>
                   <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
@@ -116,7 +103,7 @@ const Navbar: React.FC = () => {
                 <Link to="/register" className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
                 currentPath === `/register` ? "text-highlight" : "text-secondary hover:text-highlight"
                 }`}>
-                  Register
+                  Kayıt ol
                   <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
                   </span>
                   <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
@@ -129,7 +116,7 @@ const Navbar: React.FC = () => {
                 <Link to="/login" className={`relative group transform duration-500 hover:scale-105 p-2 font-bold font-display self-center ${
                 currentPath === `/login` ? "text-highlight" : "text-secondary hover:text-highlight"
                 }`}>
-                  Login
+                  GİRİŞ YAP
                   <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-highlight duration-300 group-hover:scale-x-100">
                   </span>
                   <span className="absolute bottom-0 left-0 h-full w-0.5 origin-bottom scale-y-0 transform bg-highlight duration-300 group-hover:scale-y-100">
