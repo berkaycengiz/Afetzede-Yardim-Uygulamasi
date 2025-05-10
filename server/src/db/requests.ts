@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const RequestSchema = new mongoose.Schema({
   requestedBy: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
   type: {type: String, enum: ['barinma', 'gida', 'su', 'ilac', 'ilk yardim', 'giyim', 'ulasim', 'enkaz', 'yangin', 'diger'], required: true},
-  description: {type: String, required: true},
+  description: {type: String,},
   photo: {type: String},
   status: {type: String, enum: ['in_progress', 'resolved'], default: 'in_progress'},
   location: {lat: { type: Number, required: true }, lng: { type: Number, required: true}},

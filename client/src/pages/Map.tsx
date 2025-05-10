@@ -7,6 +7,7 @@ import SubmitButton from "../components/SubmitButton";
 import MarkerClusterGroup from "react-leaflet-cluster"
 import { useModalStore } from "../store/modalStore";
 import { PostModal } from "../components/PostModal";
+import { useAuthStore } from "../store/authStore";
 
 const Map: React.FC = () => {
   const turkeyBounds: L.LatLngBoundsExpression = [
@@ -20,11 +21,15 @@ const Map: React.FC = () => {
     popUp: "Ankara'dan yardım talebi",
     },
     {
+    geocode: [39.9736832, 30.5136511],
+    popUp: "Ankara'dan yardım talebi",
+    },
+    {
     geocode: [41.01, 28.97],
     popUp: "İstanbul'dan yardım talebi",
     },
     {
-    geocode: [40.98, 29.20  ],
+    geocode: [40.98, 29.20],
     popUp: "İstanbul'dan yardım talebi",
     },
     {
@@ -34,13 +39,15 @@ const Map: React.FC = () => {
   ];
 
   const open = useModalStore((state) => state.open);
+  
+  const { isLoggedIn } = useAuthStore();
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       <Navbar />
       <PostModal></PostModal>
       <div className="flex flex-col gap-4 items-center justify-center p-4">
-        <SubmitButton onClick={open} style={{width: "10%"}}>Yardım Talebi</SubmitButton>
+        <SubmitButton onClick={open} style={{width: "150px"}} disabled={!isLoggedIn}>Yardım Talebi</SubmitButton>
         <MapContainer
         center={[39.92, 32.85]}
         zoom={6}

@@ -1,8 +1,8 @@
 import { uploadFromBuffer } from "../helpers/cloudinaryHelper";
-import { createRequest, getRequests } from "../db/requests";
-import { getUserById } from "../db/users";
+import { createRequest, getRequests, RequestModel } from "../db/requests";
 import express from "express";
 import { get } from "lodash";
+
 
 export const newRequest = async (req: express.Request, res: express.Response): Promise<any> => {
     try {
@@ -10,22 +10,22 @@ export const newRequest = async (req: express.Request, res: express.Response): P
         const { type, location, photo, description } = req.body;
         let photoUrl = ""
 
-        const existing = await getUserById(userId);
+        const existingRequest = await RequestModel.findOne({ requestedBy: userId });
 
-        if (existing) {
-          return res.status(400).json({ message: "Mevcut talebiniz bulunmaktadır." });
+        if (existingRequest) {
+          return res.status(400).json({ message: "Zaten mevcut bir yardım talebiniz var." });
         }
 
         if (!location){
           return res.status(400).json({ message: "Konum bilgileriniz alınamadı." });
         }
       
-        if (!type || !description) {
+        if (!type) {
           return res.status(400).json({ message: "Tüm alanları dolduğunuzdan emin olun." });
         }
       
         if (description.length > 60){
-          return res.status(400).json({ message: "Açıklama 120 karakterden fazla olamaz." });
+          return res.status(400).json({ message: "Açıklama 60 karakterden fazla olamaz." });
         }
 
         if (req.file) {

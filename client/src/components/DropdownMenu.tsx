@@ -9,9 +9,10 @@ interface DropdownMenuItem {
 interface DropdownMenuProps {
   items: DropdownMenuItem[];
   trigger: React.ReactElement;
+  style?: React.CSSProperties;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, trigger }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, trigger, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +34,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, trigger }) => {
   }, []);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block text-left" ref={dropdownRef} style={style}>
       <div onClick={toggleDropdown} className="inline-block w-full cursor-pointer">
         {trigger}
       </div>
